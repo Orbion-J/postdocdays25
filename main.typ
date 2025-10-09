@@ -1,7 +1,7 @@
 #import "@preview/touying:0.6.1": *
 #import themes.metropolis: *
 
-#import "@preview/curryst:0.5.0": rule, prooftree
+#import "@preview/curryst:0.5.0" as curryst : rule, prooftree
 #import "@preview/fletcher:0.5.7" as fletcher: diagram, node, edge
 #import "@preview/ctheorems:1.1.3" : *
 
@@ -22,31 +22,32 @@
   config-common(handout: true)
 )
 
+#set text(font:"IBM Plex Sans")
+#show math.equation: set text(font:"IBM Plex Math")
+
 #set heading(numbering: "1.1")
 // #show heading.where(level: 2): set heading(numbering: none)
 #show outline.entry: it => it.indented(it.prefix(), it.body())
 // #show outline.entry.where(level : 2) : set text(size: 0.9em)
+
 
 #show: thmrules.with(qed-symbol: $square$)
 
 #let remark = thmbox("remark", "Remark", fill: rgb("#eeeeee")).with(numbering: none)
 #let claim = thmbox("claim", "Claim", fill: rgb("#eeffee")).with(numbering: none)
 #let definition = thmbox("definition", "Definition", fill: rgb("#eeeeff")).with(numbering:none)
+#let theorem = thmbox("theorem", "Theorem", fill: rgb("#eeffee")).with(numbering:none)
+#let lemma = thmbox("lemma", "Lemma", fill: rgb("#ffffee")).with(numbering:none)
+#let corollary = thmbox("corollary", "Corollary", fill: rgb("#eeffee")).with(numbering:none)
 
-#let theorem = thmbox("theorem", "Theorem", fill: rgb("#eeffee"))
-#let corollary = thmplain(
-  "corollary",
-  "Corollary",
-  base: "theorem",
-  titlefmt: strong
-)
 #let example = thmplain("example", "Example").with(numbering: none)
 #let proof = thmproof("proof", "Proof")
 
-#set text(font:"IBM Plex Sans")
-#show math.equation: set text(font:"IBM Plex Math")
 
 #let app = $thick$
+
+#let rule(..r) = box(curryst.prooftree(vertical-spacing:0.3em, curryst.rule(..r)))
+
 
 #title-slide()
 
@@ -111,21 +112,164 @@ The rest of this talk:
 #definition([$λ$-terms])[ 
   $ t, u... ::= x | t app u | λ x. t $
   $x ∈ X$ a set of variables. We consider terms equal up to renaming of *bound* variables.
-]
+] #pause
 #example[
   $
-  "id" = λ x . x = λ y. y
-  wide λ y. x = λ z. x != λ y.z
+  id = λ x . x = λ y. y pause
+  wide λ y. x = λ z. x != λ y.z pause
   wide λ x. y app (z app x) 
-  wide λ x. (y app z) app x = λ x. y app z app x 
+  wide λ x. (y app z) app x = λ x. y app z app x pause
   $$
-  (λ x. x app ω) app  (y app (λ x. x app y))
+  (λ x. x app id) app  (y app (λ x. x app y)) pause
   wide ω = λ x. x app x 
   wide Ω = ω app ω = (λ x. x app x) app (λ x. x app x)
   $
 ]
 
 == Semantics
+
+#let bred = $scripts(->)_β$
+#let nbred = $scripts(arrow.r.not)_β$
+
+- reduction relation $t bred t'$ #pause
+- defined by induction on the left-hand side term #pause
+
+#definition[$β$-reduction][
+
+  #rule(
+    name:$β$,
+    $(λ x . t) app u bred t[x slash u]$
+  ) #pause
+  #h(1fr)
+  #rule(
+    name:$λ$,
+    $λ x . t bred λ x. t'$,
+    $t bred t'$
+  )
+  #h(1fr)
+  #rule(
+    name:"appl",
+    $t app u bred t' app  u$,
+    $t bred t'$
+  )
+  #h(1fr)
+  #rule(
+    name:"appr",
+    $t app u bred t app  u'$,
+    $u bred u'$
+  )
+
+  #meanwhile
+  where $t[x slash u]$ is the term $t$ where each occurence of $x$ is replaced by $u$
+] #pause
+#v(-1em)
+#definition[Normal Form][
+  $t$ is a *normal form* if there is no $u$ such that $t bred u$. Write $t nbred$.
+]
+
+
+  ---
+
+  #rule(
+    name:$β$,
+    $(λ x . t) app u bred t[x slash u]$
+  ) 
+  #h(1fr)
+  #rule(
+    name:$λ$,
+    $λ x . t bred λ x. t'$,
+    $t bred t'$
+  )
+  #h(1fr)
+  #rule(
+    name:"appl",
+    $t app u bred t' app  u$,
+    $t bred t'$
+  )
+  #h(1fr)
+  #rule(
+    name:"appr",
+    $t app u bred t app  u'$,
+    $u bred u'$
+  )
+
+  #example[
+    $
+    id app y = (λ x.x) app y bred pause x[x slash y] = y
+    $ #pause
+    $
+    f = λ x. λ y. y app x
+    wide f app t bred λ y. y app t
+    $ #pause
+    $
+    (λ z . f app z) app omega bred f app pause omega bred λ y. y app omega pause
+    wide (λ z . f app z) app omega bred (λ z. λ y. y app z) app omega pause bred λ y. y app omega
+    $ #pause
+    $
+    x nbred
+    wide id nbred
+    wide λ x . t nbred
+    $ #pause
+    $
+    Ω = ω app ω = (λ x. x app x) app omega bred pause ω app ω pause bred ω app ω bred...
+    $
+  ]
+
+== Confluence
+
+#definition[ $t bred^* u <=> t bred ... bred u$ ]
+
+#theorem[Confluence][
+  For any terms $t, u, u'$ such that $t bred u$ and $t bred u'$, there exists a term $v$ such that $u bred^* v$ and $u' bred^* v$.
+] #pause
+
+#proof[
+  The proof is by induction on the term $t$. We do it next slide.
+]
+
+#corollary[
+  If $t bred^* u nbred$ then such a $u$ is unique.
+]
+
+---
+
+- If $t = x$ then $t nbred$.
+- If $t = λ x. t_0$, 
+  #align(center)[
+    #diagram(spacing:1.5em,
+		node((2,0), $λ x . t_0$), edge($λ$, "->"), edge((3,1), $λ$, "->"),
+		node((1,1), $λ x. u_0$), edge((2,2), $λ$, "->", label-side:right),
+		node((3,1), $λ x. u'_0$), edge($λ$, "->", label-side:left),
+		node((2,2), $λ x. v_0$),
+	)
+  #h(2em)
+   #diagram(spacing:1.5em,
+		node((2,0), $t_0$), edge("->"), edge((3,1),"->"),
+		node((1,1), $u_0$), edge((2,2), "->", label-side:right),
+		node((3,1), $u'_0$), edge("->", label-side:left),
+		node((2,2), $v_0$),
+	) 
+ ]
+
+- If $t = t_1 app t_2$,
+  #align(center)[
+    #diagram(spacing:1.5em,
+		node((2,0), $t_1 app t_2$), edge($r$, "->"), edge((3,1), $r'$, "->"),
+		node((1,1), $u$), 
+      node((3,1), $u'$),
+    )
+  ]
+  Inspect what $r, r'$ can be.
+
+---
+
+TODO
+
+#lemma[Congruence][
+  $u bred^* u' => forall t, t[x \/ u] bred^*t[x\/u'].$
+]
+
+
 
 = Simply Typed $λ$-calculus
 

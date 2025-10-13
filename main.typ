@@ -4,6 +4,7 @@
 #import "@preview/curryst:0.5.0" as curryst : rule, prooftree
 #import "@preview/fletcher:0.5.7" as fletcher: diagram, node, edge
 #import "@preview/ctheorems:1.1.3" : *
+#import "diagbox.typ": *
 
 #import "@preview/itemize:0.1.2" as el
 #show: el.default-enum-list
@@ -129,6 +130,7 @@ The rest of this talk:
 == Semantics
 
 #let bred = $scripts(->)_β$
+#let bredsim = $scripts(->>)_β$
 #let nbred = $scripts(arrow.r.not)_β$
 
 - reduction relation $t bred t'$ #pause
@@ -233,17 +235,68 @@ The rest of this talk:
 
 ---
 
-- If $t = x$ then $t nbred$.
-- If $t = λ x. t_0$, 
+#v(-1em)
+#definition[Simultaneous reduction][
+
+  #rule(
+    name:$β$,
+    $(λ x . t) app u bredsim t'[x slash u']$,
+    $t bredsim t'$,
+    $u bredsim u'$
+  ) #pause
+  #h(1fr)
+  #rule(
+    name:$λ$,
+    $λ x . t bredsim λ x. t'$,
+    $t bredsim t'$
+  )
+  #h(1fr)
+  #rule(
+    name:"app",
+    $t app u bredsim t' app  u'$,
+    $t bredsim t'$,
+    $u bredsim u'$
+  )
+  #h(1fr)
+  #rule(
+    name:"id",
+    $t bredsim t$
+  )
+
+] #pause
+#lemma[$t bred t' quad => quad  t bredsim  t' quad  => quad  t bred^* t'$.]
+#lemma[Diamond property][
+  For any terms $t, u, u'$ such that $t bredsim u$ and $t bredsim u'$, there exists a term $v$ such that $u bredsim v$ and $u' bredsim v$.
+]
+
+---
+  _Proof:_ By induction on $t bredsim u$.
+  / id vs.  anything: $u = t$
   #align(center)[
-    #diagram(spacing:1.5em,
+  #diagram(spacing:1em,
+		node((2,0), $t$), edge("->", [id]), edge((3,1),"->"),
+		node((1,1), $t$), edge((2,2), "->", label-side:right),
+		node((3,1), $u'$), edge("->", label-side:left),
+		node((2,2), $u'$),
+	)
+  ]
+  / $λ$ vs. anything : $t = λ x. t_0$, $u = λ x. u_0$ and $t_0 bredsim u_0$
+   #align(center)[
+    #diagram(spacing:1em,
+		node((2,0), $λ x . t_0$), edge($λ$, "->"), edge((3,1), [?], "->"),
+		node((1,1), $λ x. u_0$),
+      node((3,1), $u'$), 
+		node((2,2), []),
+	)
+   #h(2em)
+    #diagram(spacing:1em,
 		node((2,0), $λ x . t_0$), edge($λ$, "->"), edge((3,1), $λ$, "->"),
 		node((1,1), $λ x. u_0$), edge((2,2), $λ$, "->", label-side:right),
 		node((3,1), $λ x. u'_0$), edge($λ$, "->", label-side:left),
 		node((2,2), $λ x. v_0$),
 	)
   #h(2em)
-   #diagram(spacing:1.5em,
+   #diagram(spacing:1em,
 		node((2,0), $t_0$), edge("->"), edge((3,1),"->"),
 		node((1,1), $u_0$), edge((2,2), "->", label-side:right),
 		node((3,1), $u'_0$), edge("->", label-side:left),
@@ -251,24 +304,81 @@ The rest of this talk:
 	) 
  ]
 
-- If $t = t_1 app t_2$,
-  #align(center)[
-    #diagram(spacing:1.5em,
-		node((2,0), $t_1 app t_2$), edge($r$, "->"), edge((3,1), $r'$, "->"),
-		node((1,1), $u$), 
-      node((3,1), $u'$),
-    )
-  ]
-  Inspect what $r, r'$ can be.
-
----
-
-TODO
-
-#lemma[Congruence][
-  $u bred^* u' => forall t, t[x \/ u] bred^*t[x\/u'].$
+  ---
+  / app vs. app : $t = t_1 app t_2$, $u = u_1 app u_2$, $u' = u'_1 app u'_2$ and ...
+   #align(center)[
+    #diagram(spacing:1em,
+		node((2,0), $t_1 app t_2$), edge([app], "->"), edge((3,1), [app], "->"),
+		node((1,1), $u_1 app u_2$), edge((2,2), [app], "->", label-side:right),
+		node((3,1), $u'_1 app u'_2$), edge([app], "->", label-side:left),
+		node((2,2), $v_1 app v_2$),
+	)
+   #h(2em)
+   #diagram(spacing:1em,
+		node((2,0), $t_1$), edge("->"), edge((3,1),"->"),
+		node((1,1), $u_1$), edge((2,2), "->", label-side:right),
+		node((3,1), $u'_1$), edge("->", label-side:left),
+		node((2,2), $v_1$),
+	)  #h(2em)
+   #diagram(spacing:1em,
+		node((2,0), $t_2$), edge("->"), edge((3,1),"->"),
+		node((1,1), $u_2$), edge((2,2), "->", label-side:right),
+		node((3,1), $u'_2$), edge("->", label-side:left),
+		node((2,2), $v_2$),
+	) 
+ ]
+#lemma[
+  $t bredsim t' and u bredsim u' => t[x \/ u] bredsim t'[x\/u'].$
 ]
+---
+ / $β$ vs. $β$ : $t = (λ x .t_1) app t_2$ and ...
+   #align(center)[
+    #diagram(spacing:1em,
+		node((2,0), $(λ x .t_1) app t_2$), edge($β$, "->"), edge((3,1), $β$, "->"),
+		node((1,1), $u_1[x\/u_2]$), edge((2,2), [lemma], "->", label-side:right),
+		node((3,1), $u'_1[x\/u'_2]$), edge([lemma], "->", label-side:left),
+		node((2,2), $v_1[v_2\/v_1]$),
+	)
+   #h(2em)
+   #diagram(spacing:1em,
+		node((2,0), $t_1$), edge("->"), edge((3,1),"->"),
+		node((1,1), $u_1$), edge((2,2), "->", label-side:right),
+		node((3,1), $u'_1$), edge("->", label-side:left),
+		node((2,2), $v_1$),
+	)  #h(2em)
+   #diagram(spacing:1em,
+		node((2,0), $t_2$), edge("->"), edge((3,1),"->"),
+		node((1,1), $u_2$), edge((2,2), "->", label-side:right),
+		node((3,1), $u'_2$), edge("->", label-side:left),
+		node((2,2), $v_2$),
+	) 
+ ]
 
+
+ / $β$ vs. app : $t = (λ x .t_1) app t_2$ and ...
+   #align(center)[
+    #diagram(spacing:1em,
+		node((2,0), $(λ x .t_1) app t_2$), edge($β$, "->"), edge((3,1), [app], "->"),
+		node((1,1), $u_1[x\/u_2]$), edge((2,2), [lemma], "->", label-side:right),
+		node((3,1), $(λ x .u'_1) app u'_2$), edge($beta$, "->", label-side:left),
+		node((2,2), $v_1[v_2\/v_1]$),
+	)
+   #h(2em)
+   #diagram(spacing:1em,
+		node((2,0), $t_1$), edge("->"), edge((3,1),"->"),
+		node((1,1), $u_1$), edge((2,2), "->", label-side:right),
+		node((3,1), $u'_1$), edge("->", label-side:left),
+		node((2,2), $v_1$),
+	)  #h(2em)
+   #diagram(spacing:1em,
+		node((2,0), $t_2$), edge("->"), edge((3,1),"->"),
+		node((1,1), $u_2$), edge((2,2), "->", label-side:right),
+		node((3,1), $u'_2$), edge("->", label-side:left),
+		node((2,2), $v_2$),
+	) 
+ ]
+
+ #h(1fr) $square$
 
 
 = Simply Typed $λ$-calculus

@@ -4,9 +4,8 @@
 #import "@preview/curryst:0.5.0" as curryst: prooftree, rule
 #import "@preview/fletcher:0.5.7" as fletcher: diagram, edge, node
 #import "@preview/ctheorems:1.1.3": *
-#import "diagbox.typ": *
 
-#import "@preview/itemize:0.1.2" as el
+#import "@preview/itemize:0.2.0" as el
 #show: el.default-enum-list
 
 #show: metropolis-theme.with(
@@ -48,11 +47,12 @@
 #let proofnoqed = thmplain("proof", "Proof", namefmt: emph).with(numbering: none)
 
 
-#let app = $thick$
 #let proves = $tack.r$
 #let bred = $scripts(->)_β$
 #let bredsim = $scripts(->>)_β$
 #let nbred = $scripts(arrow.r.not)_β$
+
+#show "␣": $thick$
 
 #let rule(..r) = box(curryst.prooftree(vertical-spacing: 0.3em, curryst.rule(..r)))
 #let crule = curryst.rule
@@ -121,19 +121,19 @@ The rest of this talk:
 == Syntax
 
 #definition([$λ$-terms])[
-  $ t, u... ::= x | t app u | λ x. t $
+  $ t, u... ::= x | t ␣ u | λ x. t $
   $x ∈ X$ a set of variables. We consider terms equal up to renaming of *bound* variables.
 ] #pause
 #example[
   $
     id = λ x . x = λ y. y pause
     wide λ y. x = λ z. x != λ y.z pause
-    wide λ x. y app (z app x)
-    wide λ x. (y app z) app x = λ x. y app z app x pause
+    wide λ x. y ␣ (z ␣ x)
+    wide λ x. (y ␣ z) ␣ x = λ x. y ␣ z ␣ x pause
   $$
-    (λ x. x app id) app (y app (λ x. x app y)) pause
-    wide ω = λ x. x app x
-    wide Ω = ω app ω = (λ x. x app x) app (λ x. x app x)
+    (λ x. x ␣ id) ␣ (y ␣ (λ x. x ␣ y)) pause
+    wide ω = λ x. x ␣ x
+    wide Ω = ω ␣ ω = (λ x. x ␣ x) ␣ (λ x. x ␣ x)
   $
 ]
 
@@ -145,7 +145,7 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
 
   #rule(
     name: $β$,
-    $(λ x . t) app u bred t[x slash u]$,
+    $(λ x . t) ␣ u bred t[x slash u]$,
   )
   #pause
   #h(1fr)
@@ -157,13 +157,13 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
   #h(1fr)
   #rule(
     name: "appl",
-    $t app u bred t' app u$,
+    $t ␣ u bred t' ␣ u$,
     $t bred t'$,
   )
   #h(1fr)
   #rule(
     name: "appr",
-    $t app u bred t app u'$,
+    $t ␣ u bred t ␣ u'$,
     $u bred u'$,
   )
 
@@ -178,7 +178,7 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
 
 #rule(
   name: $β$,
-  $(λ x . t) app u bred t[x slash u]$,
+  $(λ x . t) ␣ u bred t[x slash u]$,
 )
 #h(1fr)
 #rule(
@@ -189,27 +189,27 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
 #h(1fr)
 #rule(
   name: "appl",
-  $t app u bred t' app u$,
+  $t ␣ u bred t' ␣ u$,
   $t bred t'$,
 )
 #h(1fr)
 #rule(
   name: "appr",
-  $t app u bred t app u'$,
+  $t ␣ u bred t ␣ u'$,
   $u bred u'$,
 )
 
 #example[
   $
-    id app y = (λ x.x) app y bred pause x[x slash y] = y
+    id ␣ y = (λ x.x) ␣ y bred pause x[x slash y] = y
   $ #pause
   $
-    f = λ x. λ y. y app x
-    wide f app t bred λ y. y app t
+    f = λ x. λ y. y ␣ x
+    wide f ␣ t bred λ y. y ␣ t
   $ #pause
   $
-    (λ z . f app z) app omega bred f app pause omega bred λ y. y app omega pause
-    wide (λ z . f app z) app omega bred (λ z. λ y. y app z) app omega pause bred λ y. y app omega
+    (λ z . f ␣ z) ␣ omega bred f ␣ pause omega bred λ y. y ␣ omega pause
+    wide (λ z . f ␣ z) ␣ omega bred (λ z. λ y. y ␣ z) ␣ omega pause bred λ y. y ␣ omega
   $ #pause
   $
     x nbred
@@ -217,7 +217,7 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
     wide λ x . t nbred
   $ #pause
   $
-    Ω = ω app ω = (λ x. x app x) app omega bred pause ω app ω pause bred ω app ω bred...
+    Ω = ω ␣ ω = (λ x. x ␣ x) ␣ omega bred pause ω ␣ ω pause bred ω ␣ ω bred...
   $
 ]
 
@@ -241,7 +241,7 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
 
   #rule(
     name: $β$,
-    $(λ x . t) app u bredsim t'[x slash u']$,
+    $(λ x . t) ␣ u bredsim t'[x slash u']$,
     $t bredsim t'$,
     $u bredsim u'$,
   )
@@ -254,7 +254,7 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
   #h(1fr)
   #rule(
     name: "app",
-    $t app u bredsim t' app u'$,
+    $t ␣ u bredsim t' ␣ u'$,
     $t bredsim t'$,
     $u bredsim u'$,
   )
@@ -335,18 +335,18 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
     )
   ]
   #pause
-/ app vs. app: $t = t_1 app t_2$, $u = u_1 app u_2$, $u' = u'_1 app u'_2$ and ...
+/ app vs. app: $t = t_1 ␣ t_2$, $u = u_1 ␣ u_2$, $u' = u'_1 ␣ u'_2$ and ...
   #align(center)[
     #diagram(
       spacing: 1em,
-      node((2, 0), $t_1 app t_2$),
+      node((2, 0), $t_1 ␣ t_2$),
       edge([app], "->"),
       edge((3, 1), [app], "->"),
-      node((1, 1), $u_1 app u_2$),
+      node((1, 1), $u_1 ␣ u_2$),
       edge((2, 2), [app], "->", label-side: right),
-      node((3, 1), $u'_1 app u'_2$),
+      node((3, 1), $u'_1 ␣ u'_2$),
       edge([app], "->", label-side: left),
-      node((2, 2), $v_1 app v_2$),
+      node((2, 2), $v_1 ␣ v_2$),
     )
     #h(2em)
     #diagram(
@@ -373,11 +373,11 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
     )
   ]
 ---
-/ $β$ vs. $β$: $t = (λ x .t_1) app t_2$ and ...
+/ $β$ vs. $β$: $t = (λ x .t_1) ␣ t_2$ and ...
   #align(center)[
     #diagram(
       spacing: 1em,
-      node((2, 0), $(λ x .t_1) app t_2$),
+      node((2, 0), $(λ x .t_1) ␣ t_2$),
       edge($β$, "->"),
       edge((3, 1), $β$, "->"),
       node((1, 1), $u_1[x\/u_2]$),
@@ -415,16 +415,16 @@ Reduction relation $t bred u$: "if I have the term $t$ and I do one step of comp
   $t bredsim t' and u bredsim u' => t[x \/ u] bredsim t'[x\/u'].$
 ]
 ---
-/ $β$ vs. app: $t = (λ x .t_1) app t_2$ and ...
+/ $β$ vs. app: $t = (λ x .t_1) ␣ t_2$ and ...
   #align(center)[
     #diagram(
       spacing: 1em,
-      node((2, 0), $(λ x .t_1) app t_2$),
+      node((2, 0), $(λ x .t_1) ␣ t_2$),
       edge($β$, "->"),
       edge((3, 1), [app], "->"),
       node((1, 1), $u_1[x\/u_2]$),
       edge((2, 2), [lemma], "->", label-side: right),
-      node((3, 1), $(λ x .u'_1) app u'_2$),
+      node((3, 1), $(λ x .u'_1) ␣ u'_2$),
       edge($beta$, "->", label-side: left),
       node((2, 2), $v_1[v_2\/v_1]$),
     )
@@ -494,7 +494,7 @@ Idea:
   #h(1fr)
   #rule(
     name: "app",
-    $Γ proves t app u : B$,
+    $Γ proves t ␣ u : B$,
     $Γ proves t : A -> B$,
     $Γ proves u : A$,
   )
@@ -508,9 +508,9 @@ Idea:
 
 ---
 
-#example[$emptyset proves λ x. x : ?$ #h(1fr) $emptyset proves λ x. λ y. y app x :?$ #h(
+#example[$emptyset proves λ x. x : ?$ #h(1fr) $emptyset proves λ x. λ y. y ␣ x :?$ #h(
     1fr,
-  ) $k:?, z : ? proves (λ x. λ y. z app x) app k : ?$ #pause
+  ) $k:?, z : ? proves (λ x. λ y. z ␣ x) ␣ k : ?$ #pause
   #align(center)[
     #set text(size: 0.8em)
     #rule(
@@ -525,13 +525,13 @@ Idea:
     #h(3em)
     #rule(
       name: $λ$,
-      $emptyset proves λ x. λ y. y app x : A -> (A -> B) -> B$,
+      $emptyset proves λ x. λ y. y ␣ x : A -> (A -> B) -> B$,
       crule(
         name: $λ$,
-        $(x:A) proves λ y. y app x : (A -> B) -> B$,
+        $(x:A) proves λ y. y ␣ x : (A -> B) -> B$,
         crule(
           name: "app",
-          $(x:A), (y: A->B) proves y app x : B$,
+          $(x:A), (y: A->B) proves y ␣ x : B$,
           $(x:A), (y: A->B) proves y : A -> B$,
           $(x:A), (y: A->B) proves x : A$,
         ),
@@ -541,16 +541,16 @@ Idea:
     #v(2em)
     #rule(
       name: [app],
-      $k:A, z : A -> B proves (λ x. λ y. z app x) app k : C -> B$,
+      $k:A, z : A -> B proves (λ x. λ y. z ␣ x) ␣ k : C -> B$,
       crule(
         name: $λ$,
-        $k:A, z: A -> B proves λ x. λ y. z app x : A -> (C -> B)$,
+        $k:A, z: A -> B proves λ x. λ y. z ␣ x : A -> (C -> B)$,
         crule(
           name: $λ$,
-          $k: A, z: A -> B, x :A proves λ y. z app x : C -> B$,
+          $k: A, z: A -> B, x :A proves λ y. z ␣ x : C -> B$,
           crule(
             name: "app",
-            $k: A, z: A -> B, x : A, y: C proves z app x : B$,
+            $k: A, z: A -> B, x : A, y: C proves z ␣ x : B$,
             crule(
               name: [var],
               $..., z: A -> B proves z : A -> B$,
@@ -571,21 +571,21 @@ Idea:
 
 ---
 #remark[
-  Recall $Ω = ω app ω$ with $ω = λ x. x app x$ such that $Ω bred Ω bred ...$ What is the type of $ω$? #pause
+  Recall $Ω = ω ␣ ω$ with $ω = λ x. x ␣ x$ such that $Ω bred Ω bred ...$ What is the type of $ω$? #pause
   #align(center)[
     #rule(
       name: $λ$,
-      $Γ proves λ x . x app x : A -> B$,
+      $Γ proves λ x . x ␣ x : A -> B$,
       crule(
         name: "app",
-        $Γ, (x: A) proves x app x : B$,
+        $Γ, (x: A) proves x ␣ x : B$,
         $Γ, (x:A) proves x : C -> B$,
         $Γ, (x : A) proves x : C$,
       ),
     )
   ] #pause
 
-  $C -> B = A = C ~>$ impossible, $ω$ cannot be typed ! Therefore, $Ω = ω app ω$ can't be typed either.
+  $C -> B = A = C ~>$ impossible, $ω$ cannot be typed ! Therefore, $Ω = ω ␣ ω$ can't be typed either.
 ]
 
 
@@ -608,7 +608,11 @@ Consequences:
 ]
 
 #place(center + horizon)[
-  #set text(size: 7em, fill: rgb(50%, 50%, 50%, 30%), font: "z003")
+  #set text(
+    size: 7em,
+    fill: rgb(50%, 50%, 50%, 30%),
+    // font: "z003"
+  )
   Thx!
   Any questions?
 ]

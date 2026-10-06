@@ -8,7 +8,10 @@
   date: [(Post)doc Days -- November 12, 2026],
   author: [Robin Jourde],
   institution: [Université Savoie Mont Blanc],
-  yade-dictionary: (bluesubseteqdown: [#set text(blue); $subseteqdown$]),
+  yade-dictionary: (
+    bluesubseteqdown: [#set text(blue); $subseteqdown$],
+    idA: $id_A$,
+  ),
 )
 
 
@@ -64,7 +67,7 @@ Goal Generic method
 
   [#emoji.face.think my last year seminar],
   [],
-  [#emoji.face.monocle this year's seminar?],
+  [#emoji.face.monocle maybe later...?],
 )
 
 
@@ -89,12 +92,33 @@ Specify programming languages *implicitly*:
     - each morphism $f ∈ mor C$ has a #text(green)[source $A$] and a #text(purple)[target $B$] ($A, B ∈ ob C$)
     #v(-.4em)
     $ f ∶ #text(green)[$A$] -> #text(purple)[$B$] $
-    - morphisms *compose*: if $f ∶ A -> B$ and $g ∶ B → C$,
     #v(-.4em)
-    $ g ∘ f ∶ A → C $
-    - there are *identities*: for any $A ∈ ob C$,
-    #v(-.4em)
-    $ id_A ∶ A → A wide id_A ∘ f = f wide f ∘ id_A = f $
+    #grid(columns: (1fr, 1fr), align: top)[
+      - morphisms *compose*:
+      #v(-.4em)
+      // if $f ∶ A -> B$ and $g ∶ B → C$,
+      // #v(-.4em)
+      // $ g ∘ f ∶ A → C $
+      #set text(1.2em)
+      #set align(center)
+      ```yade
+      {"graph":{"activeTabId":0,"latexBackgroundColor":"white","latexPreamble":"\\newcommand{\\coqproof}[1]{\\checkmark}","nextTabId":1,"tabs":[{"edges":[{"from":0,"id":3,"label":{"label":"f","options":{},"zindex":0},"to":1},{"from":1,"id":4,"label":{"label":"g","options":{},"zindex":0},"to":2},{"from":0,"id":5,"label":{"label":"g ∘ f","options":{"bend":0.3,"dashed":true,"alignment":"right"},"zindex":0},"to":2}],"freehandDrawings":[],"id":0,"nextGraphId":6,"nodes":[{"id":0,"label":{"label":"A","options":{},"pos":[585,377],"zindex":0}},{"id":1,"label":{"label":"B","options":{},"pos":[663,377],"zindex":0}},{"id":2,"label":{"label":"C","options":{},"pos":[741,377],"zindex":0}}],"sizeGrid":26,"title":"1"}]},"version":20}
+      ```
+    ][
+      - there are *identity* morphisms: //for any $A ∈ ob C$,
+      #v(-.2em)
+      #set align(center)
+      #[#set text(1.2em)
+        ```yade
+        {"graph":{"activeTabId":0,"latexBackgroundColor":"white","latexPreamble":"\\newcommand{\\coqproof}[1]{\\checkmark}","nextTabId":1,"tabs":[{"edges":[{"from":0,"id":1,"label":{"label":"typ:idA","options":{"loopRadius":18.50411361843441,"loopAngle":0.055135165030434655},"zindex":0},"to":0}],"freehandDrawings":[],"id":0,"nextGraphId":2,"nodes":[{"id":0,"label":{"label":"A","options":{},"pos":[793,377],"zindex":0}}],"sizeGrid":26,"title":"1"}]},"version":20}
+        ```]
+      #v(-.4em)
+      $
+        //id_A ∶ A → A wide
+        id_A ∘ f = f wide f ∘ id_A = f
+      $
+
+    ]
 ]
 #v(-.2em)
 #examplepen[
@@ -125,30 +149,30 @@ Specify programming languages *implicitly*:
 == (Category theory -- 3/4 Some limits and colimits)
 
 #definition[Initial object][
-  Object $I$ is #text(fill:blue, weight:700)[initial] in $C$ iff $∀ X ∈ ob C, ∃! f ∶ I → X ∈ mor C$ #h(1fr) ⤳ "smallest" object
+  Object $I$ is #text(fill: blue, weight: 700)[initial] in $C$ iff $∀ X ∈ ob C, ∃! f ∶ I → X ∈ mor C$ #h(1fr) ⤳ "smallest" object
 ]
 #definition[Terminal object][
-  Object $T$ is #text(fill:green, weight:700)[terminal] in $C$ iff $∀ x ∈ ob C, ∃! f ∶ X → T ∈ mor C$ #h(1fr) ⤳ "biggest" object
+  Object $T$ is #text(fill: green, weight: 700)[terminal] in $C$ iff $∀ x ∈ ob C, ∃! f ∶ X → T ∈ mor C$ #h(1fr) ⤳ "biggest" object
 ]
-#grid(columns:(1fr, 1.1fr), align: center)[
-```yade
-{"graph":{"activeTabId":0,"latexBackgroundColor":"white","latexPreamble":"\\newcommand{\\coqproof}[1]{\\checkmark}","nextTabId":1,"tabs":[{"edges":[{"from":0,"id":6,"label":{"label":"","options":{},"zindex":4},"to":2},{"from":0,"id":7,"label":{"label":"","options":{},"zindex":0},"to":3},{"from":2,"id":8,"label":{"label":"","options":{},"zindex":1},"to":4},{"from":1,"id":9,"label":{"label":"","options":{"color ":"blue","dashed":true},"zindex":0},"to":0},{"from":1,"id":10,"label":{"label":"","options":{"color ":"blue","dashed":true},"zindex":0},"to":2},{"from":1,"id":11,"label":{"label":"","options":{"color ":"blue","dashed":true},"zindex":0},"to":4},{"from":4,"id":12,"label":{"label":"","options":{"color ":"green","dashed":true},"zindex":0},"to":5},{"from":3,"id":13,"label":{"label":"","options":{"color ":"green","dashed":true},"zindex":0},"to":5},{"from":2,"id":14,"label":{"label":"","options":{"bend":0.2,"color ":"green","dashed":true},"zindex":0},"to":5},{"from":2,"id":15,"label":{"label":"","options":{},"zindex":0},"to":3},{"from":0,"id":16,"label":{"label":"","options":{},"zindex":0},"to":4},{"from":0,"id":17,"label":{"label":"","options":{"bend":-0.1,"color ":"green","dashed":true},"zindex":0},"to":5},{"from":1,"id":18,"label":{"label":"","options":{"bend":0.1,"color ":"blue","dashed":true},"zindex":-3},"to":3}],"freehandDrawings":[],"id":0,"nextGraphId":19,"nodes":[{"id":0,"label":{"label":"X","options":{},"pos":[1183,169],"zindex":0}},{"id":1,"label":{"label":"I","options":{},"pos":[1105,169],"zindex":0}},{"id":2,"label":{"label":"Y","options":{},"pos":[1235,247],"zindex":0}},{"id":3,"label":{"label":"Z","options":{},"pos":[1287,195],"zindex":0}},{"id":4,"label":{"label":"W","options":{},"pos":[1261,117],"zindex":0}},{"id":5,"label":{"label":"T","options":{},"pos":[1365,169],"zindex":0}}],"sizeGrid":26,"title":"1"}]},"version":20}
-```][
-#examplepen[
-  In a poset, #pause $⊥$ is initial and $⊤$ is terminal. #pause
+#grid(columns: (1fr, 1.1fr), align: center)[
+  ```yade
+  {"graph":{"activeTabId":0,"latexBackgroundColor":"white","latexPreamble":"\\newcommand{\\coqproof}[1]{\\checkmark}","nextTabId":1,"tabs":[{"edges":[{"from":0,"id":6,"label":{"label":"","options":{},"zindex":4},"to":2},{"from":0,"id":7,"label":{"label":"","options":{},"zindex":0},"to":3},{"from":2,"id":8,"label":{"label":"","options":{},"zindex":1},"to":4},{"from":1,"id":9,"label":{"label":"","options":{"color ":"blue","dashed":true},"zindex":0},"to":0},{"from":1,"id":10,"label":{"label":"","options":{"color ":"blue","dashed":true},"zindex":0},"to":2},{"from":1,"id":11,"label":{"label":"","options":{"color ":"blue","dashed":true},"zindex":0},"to":4},{"from":4,"id":12,"label":{"label":"","options":{"color ":"green","dashed":true},"zindex":0},"to":5},{"from":3,"id":13,"label":{"label":"","options":{"color ":"green","dashed":true},"zindex":0},"to":5},{"from":2,"id":14,"label":{"label":"","options":{"bend":0.2,"color ":"green","dashed":true},"zindex":0},"to":5},{"from":2,"id":15,"label":{"label":"","options":{},"zindex":0},"to":3},{"from":0,"id":16,"label":{"label":"","options":{},"zindex":0},"to":4},{"from":0,"id":17,"label":{"label":"","options":{"bend":-0.1,"color ":"green","dashed":true},"zindex":0},"to":5},{"from":1,"id":18,"label":{"label":"","options":{"bend":0.1,"color ":"blue","dashed":true},"zindex":-3},"to":3}],"freehandDrawings":[],"id":0,"nextGraphId":19,"nodes":[{"id":0,"label":{"label":"X","options":{},"pos":[1183,169],"zindex":0}},{"id":1,"label":{"label":"I","options":{},"pos":[1105,169],"zindex":0}},{"id":2,"label":{"label":"Y","options":{},"pos":[1235,247],"zindex":0}},{"id":3,"label":{"label":"Z","options":{},"pos":[1287,195],"zindex":0}},{"id":4,"label":{"label":"W","options":{},"pos":[1261,117],"zindex":0}},{"id":5,"label":{"label":"T","options":{},"pos":[1365,169],"zindex":0}}],"sizeGrid":26,"title":"1"}]},"version":20}
+  ```][
+  #examplepen[
+    In a poset, #pause $⊥$ is initial and $⊤$ is terminal. #pause
 
-  In $Set$, #pause $∅$ is initial and ${*}$ is terminal.
-]]
+    In $Set$, #pause $∅$ is initial and ${*}$ is terminal.
+  ]]
 
 == (Category theory -- 4/4 Some limits and colimits)
 
 #definition[Product][
   A *product* of $X, Y ∈ ob C$ is an object $X × Y ∈ ob C$ such that
-  #grid(columns:(1.5fr, 1fr), align: center)[
-  ```yade
-{"graph":{"activeTabId":0,"latexBackgroundColor":"white","latexPreamble":"\\newcommand{\\coqproof}[1]{\\checkmark}","nextTabId":1,"tabs":[{"edges":[{"from":2,"id":10,"label":{"label":"π_1","options":{"color ":"red","alignment":"right"},"zindex":0},"to":0},{"from":2,"id":11,"label":{"label":"π_2","options":{"color ":"red"},"zindex":0},"to":1},{"from":3,"id":12,"label":{"label":"f","options":{"bend":0.4,"alignment":"right"},"zindex":0},"to":0},{"from":3,"id":13,"label":{"label":"g","options":{"bend":-0.4},"zindex":0},"to":1},{"from":3,"id":14,"label":{"label":"⟨f, g⟩","options":{"position":0.6,"dashed":true},"zindex":0},"to":2},{"from":6,"id":15,"label":{"label":"π_1","options":{"color ":"red","alignment":"right"},"zindex":0},"to":4},{"from":6,"id":16,"label":{"label":"π_2","options":{"color ":"red"},"zindex":0},"to":5},{"from":9,"id":17,"label":{"label":"π_1","options":{"color ":"red","alignment":"right"},"zindex":0},"to":7},{"from":9,"id":18,"label":{"label":"π_2","options":{"color ":"red"},"zindex":0},"to":8},{"from":7,"id":19,"label":{"label":"f","options":{"alignment":"right"},"zindex":0},"to":4},{"from":8,"id":20,"label":{"label":"h","options":{},"zindex":0},"to":5},{"from":9,"id":21,"label":{"label":"f × h","options":{"position":0.7,"dashed":true},"zindex":0},"to":6}],"freehandDrawings":[],"id":0,"nextGraphId":22,"nodes":[{"id":0,"label":{"label":"X","options":{},"pos":[611,247],"zindex":0}},{"id":1,"label":{"label":"Y","options":{},"pos":[715,247],"zindex":0}},{"id":2,"label":{"label":"X × Y","options":{},"pos":[663,195],"zindex":0}},{"id":3,"label":{"label":"A","options":{},"pos":[663,117],"zindex":0}},{"id":4,"label":{"label":"X","options":{},"pos":[819,247],"zindex":0}},{"id":5,"label":{"label":"Y","options":{},"pos":[923,247],"zindex":0}},{"id":6,"label":{"label":"X × Y","options":{},"pos":[871,195],"zindex":0}},{"id":7,"label":{"label":"A","options":{},"pos":[819,169],"zindex":0}},{"id":8,"label":{"label":"B","options":{},"pos":[923,169],"zindex":0}},{"id":9,"label":{"label":"A × B","options":{},"pos":[871,117],"zindex":0}}],"sizeGrid":26,"title":"1"}]},"version":20}
-  ```][
-    #text(fill:red, weight:700)[projection morphisms]
+  #grid(columns: (1.5fr, 1fr), align: center)[
+    ```yade
+    {"graph":{"activeTabId":0,"latexBackgroundColor":"white","latexPreamble":"\\newcommand{\\coqproof}[1]{\\checkmark}","nextTabId":1,"tabs":[{"edges":[{"from":2,"id":10,"label":{"label":"π_1","options":{"color ":"red","alignment":"right"},"zindex":0},"to":0},{"from":2,"id":11,"label":{"label":"π_2","options":{"color ":"red"},"zindex":0},"to":1},{"from":3,"id":12,"label":{"label":"f","options":{"bend":0.4,"alignment":"right"},"zindex":0},"to":0},{"from":3,"id":13,"label":{"label":"g","options":{"bend":-0.4},"zindex":0},"to":1},{"from":3,"id":14,"label":{"label":"⟨f, g⟩","options":{"position":0.6,"dashed":true},"zindex":0},"to":2},{"from":6,"id":15,"label":{"label":"π_1","options":{"color ":"red","alignment":"right"},"zindex":0},"to":4},{"from":6,"id":16,"label":{"label":"π_2","options":{"color ":"red"},"zindex":0},"to":5},{"from":9,"id":17,"label":{"label":"π_1","options":{"color ":"red","alignment":"right"},"zindex":0},"to":7},{"from":9,"id":18,"label":{"label":"π_2","options":{"color ":"red"},"zindex":0},"to":8},{"from":7,"id":19,"label":{"label":"f","options":{"alignment":"right"},"zindex":0},"to":4},{"from":8,"id":20,"label":{"label":"h","options":{},"zindex":0},"to":5},{"from":9,"id":21,"label":{"label":"f × h","options":{"position":0.7,"dashed":true},"zindex":0},"to":6}],"freehandDrawings":[],"id":0,"nextGraphId":22,"nodes":[{"id":0,"label":{"label":"X","options":{},"pos":[611,247],"zindex":0}},{"id":1,"label":{"label":"Y","options":{},"pos":[715,247],"zindex":0}},{"id":2,"label":{"label":"X × Y","options":{},"pos":[663,195],"zindex":0}},{"id":3,"label":{"label":"A","options":{},"pos":[663,117],"zindex":0}},{"id":4,"label":{"label":"X","options":{},"pos":[819,247],"zindex":0}},{"id":5,"label":{"label":"Y","options":{},"pos":[923,247],"zindex":0}},{"id":6,"label":{"label":"X × Y","options":{},"pos":[871,195],"zindex":0}},{"id":7,"label":{"label":"A","options":{},"pos":[819,169],"zindex":0}},{"id":8,"label":{"label":"B","options":{},"pos":[923,169],"zindex":0}},{"id":9,"label":{"label":"A × B","options":{},"pos":[871,117],"zindex":0}}],"sizeGrid":26,"title":"1"}]},"version":20}
+    ```][
+    #text(fill: red, weight: 700)[projection morphisms]
     - $π₁ ∶ X × Y → X$
     - $π₂ ∶ X × Y → Y$
     #arl $Δ_X = ⟨id_X, id_X⟩ ∶ X → X × X$
@@ -204,15 +228,15 @@ Let's do an example!
 == Example: theory of groups
 
 #v(-.5em)
-#definition[Textbook definition of a group][
-#v(-.6em)
+#definition[Wikipedia definition of a group][
+  #v(-.6em)
   #image("./def-grp-wiki.png")
 ]
 #v(-.3em)
-#exampleinline[$(ZZ, +)$, $(RR^*, ×)$]
+#exampleinline[$(ZZ, +)$, $(RR^*, ×)$, ...]
 #v(-.6em)
 
---- 
+---
 #definition[Finite limit sketch of groups][
   - a sort $X$
   - operations
@@ -233,7 +257,8 @@ Let's do an example!
     {"graph":{"activeTabId":0,"latexBackgroundColor":"white","latexPreamble":"\\newcommand{\\id}{\\mathsf{id}}","nextTabId":1,"tabs":[{"edges":[{"from":0,"id":4,"label":{"label":"≅","options":{},"zindex":0},"to":1},{"from":1,"id":5,"label":{"label":"e × \\id","options":{},"zindex":0},"to":2},{"from":2,"id":6,"label":{"label":"⊙","options":{},"zindex":0},"to":3},{"from":0,"id":7,"label":{"label":"","options":{"bend":0.2,"head":"none","kind":"double"},"zindex":0},"to":3}],"freehandDrawings":[],"id":0,"nextGraphId":8,"nodes":[{"id":0,"label":{"label":"X","options":{},"pos":[768.5,420.5],"zindex":0}},{"id":1,"label":{"label":"1 × X","options":{},"pos":[855.5,420.5],"zindex":0}},{"id":2,"label":{"label":"X × X","options":{},"pos":[971.5,420.5],"zindex":0}},{"id":3,"label":{"label":"X","options":{},"pos":[971.5,478.5],"zindex":0}}],"sizeGrid":29,"title":"1"}]},"version":20}
     ```,
   )
-  \+ $i(x) ⊙ x = e$ and $x ⊙ e = x$ #emoji.page.pencil
+  // #hh $i(x) ⊙ x = e$ #hh and #hh $x ⊙ e = x$ #hh #emoji.page.pencil #hh
+  #hh \+ #hh $i(x) ⊙ x = e$ #hh and #hh $x ⊙ e = x$ #hh #emoji.page.pencil #hh
 ]
 // #pause
 // #definition[Theory of groups][
@@ -244,12 +269,23 @@ Let's do an example!
 #definition[Theory of groups][
   #show ",": it => [#it #h(1em)]
   Category (with finite limits) $C_"grp"$ generated from this sketch:
-  - $X, 1, X × X, X × X × X, ... quad ∈ ob C_"grp"$
 
-  - $⊙ ∶ X × X → X, i ∶ X → X, e ∶ 1 → X quad ∈ mor C_"grp"$ \
-    $Δ ∶ X → X × X, ! ∶ X → 1, id × e ∶ X × 1 → X × X, ... quad ∈ mor C_"grp"$ \
-    $i ∘ e, ⊙ ∘ Δ, ... quad ∈ mor C_"grp"$
-  - equations are satisfied
+  #v(-.5em) #grid(columns: (auto, 1fr), align: (
+      left,
+      center,
+    ), inset: .4em)[
+    $X, 1, X × X, X × X × X, ...$][$∈ ob C_"grp"$][][][
+    $⊙ ∶ X × X → X, i ∶ X → X, e ∶ 1 → X$][$∈ mor C_"grp"$][
+    $Δ ∶ X → X × X, ! ∶ X → 1, id × e ∶ X × 1 → X × X, ...$][$∈ mor C_"grp"$][
+    $i ∘ e, ⊙ ∘ Δ, ...$][$∈ mor C_"grp"$]
+
+  and equations are satisfied
+  // - $X, 1, X × X, X × X × X, ... quad ∈ ob C_"grp"$
+  //
+  // - #grid(columns:(auto, 1fr))[$⊙ ∶ X × X → X, i ∶ X → X, e ∶ 1 → X$ \
+  //   $Δ ∶ X → X × X, ! ∶ X → 1, id × e ∶ X × 1 → X × X, ...$ \
+  //   $i ∘ e, ⊙ ∘ Δ, ...$][#set align(center+horizon); $∈ mor C_"grp"$]
+  // - equations are satisfied
 ]
 
 ---
@@ -259,22 +295,29 @@ Let's do an example!
     "𝐌𝐨𝐝"(C_"grp") := "𝐋𝐄𝐗"(C_"grp", Set) #uncover("2-", $quad = "𝐆𝐫𝐩" #emoji.face.cool$)
   $
   Finite limit preserving _functors_ from $C_"grp"$ to $Set$.
-  A model $M ∶ C_"grp" → Set$
-  - maps $X$ to a *set* $G = M(X)$,
-  - maps $⊙ ∶ X × X → X$ to a *function* $+ ∶ G × G → G$,
-  - maps $e ∶ 1 → X$ to a *function* ${*} → G$ i.e. a element $0 ∈ G$,
-  - maps $i ∶ X → X$ to a *function* $- ∶ G → G$,
-  - preserves the equations: e.g. $$
-    #grid(
-      columns: (1fr, auto, 1fr),
-      align: center,
-      ```yade
-      {"graph":{"activeTabId":0,"latexBackgroundColor":"white","latexPreamble":"\\newcommand{\\id}{\\mathsf{id}}","nextTabId":1,"tabs":[{"edges":[{"from":0,"id":5,"label":{"label":"Δ","options":{},"zindex":0},"to":1},{"from":1,"id":6,"label":{"label":"\\id × -","options":{},"zindex":0},"to":2},{"from":2,"id":7,"label":{"label":"+","options":{},"zindex":0},"to":3},{"from":0,"id":8,"label":{"label":"!","options":{"alignment":"right"},"zindex":0},"to":4},{"from":4,"id":9,"label":{"label":"\"0\"","options":{},"zindex":0},"to":3}],"freehandDrawings":[],"id":0,"nextGraphId":10,"nodes":[{"id":0,"label":{"label":"G","options":{},"pos":[1261.5,507.5],"zindex":0}},{"id":1,"label":{"label":"G × G","options":{},"pos":[1348.5,507.5],"zindex":0}},{"id":2,"label":{"label":"G × G","options":{},"pos":[1464.5,507.5],"zindex":0}},{"id":3,"label":{"label":"G","options":{},"pos":[1464.5,565.5],"zindex":0}},{"id":4,"label":{"label":"\\{\\ast\\}","options":{},"pos":[1261.5,565.5],"zindex":0}}],"sizeGrid":29,"title":"1"}]},"version":20}
-      ```,
-      [$⇔$],
-      [$+ ∘ (id × -) ∘ Δ = 0$\  \ $∀ g ∈ G, g + -g = 0$],
-    )
-    ...
+  A model $M ∶ C_"grp" → Set$ maps
+  // - maps $X$ to a *set* $G = M(X)$,
+  // - maps $⊙ ∶ X × X → X$ to a *function* $+ ∶ G × G → G$,
+  // - maps $e ∶ 1 → X$ to a *function* ${*} → G$ i.e. a element $0 ∈ G$,
+  // - maps $i ∶ X → X$ to a *function* $- ∶ G → G$,
+  #v(-.5em)
+  #table(columns: (1fr, auto, 2fr))[
+    $X$][to][a *set* $G = M(X)$][
+    $⊙ ∶ X × X → X$][to][a *function* $+ ∶ G × G → G$][
+    $e ∶ 1 → X$][to][a *function* ${*} → G$, i.e. a element $0 ∈ G$][
+    $i ∶ X → X$][to][a *function* $- ∶ G → G$]
+  and preserves the equations: e.g.
+  #grid(
+    columns: (1fr, auto, 1fr, auto),
+    align: center,
+    ```yade
+    {"graph":{"activeTabId":0,"latexBackgroundColor":"white","latexPreamble":"\\newcommand{\\id}{\\mathsf{id}}","nextTabId":1,"tabs":[{"edges":[{"from":0,"id":5,"label":{"label":"Δ","options":{},"zindex":0},"to":1},{"from":1,"id":6,"label":{"label":"\\id × -","options":{},"zindex":0},"to":2},{"from":2,"id":7,"label":{"label":"+","options":{},"zindex":0},"to":3},{"from":0,"id":8,"label":{"label":"!","options":{"alignment":"right"},"zindex":0},"to":4},{"from":4,"id":9,"label":{"label":"\"0\"","options":{},"zindex":0},"to":3}],"freehandDrawings":[],"id":0,"nextGraphId":10,"nodes":[{"id":0,"label":{"label":"G","options":{},"pos":[1261.5,507.5],"zindex":0}},{"id":1,"label":{"label":"G × G","options":{},"pos":[1348.5,507.5],"zindex":0}},{"id":2,"label":{"label":"G × G","options":{},"pos":[1464.5,507.5],"zindex":0}},{"id":3,"label":{"label":"G","options":{},"pos":[1464.5,565.5],"zindex":0}},{"id":4,"label":{"label":"\\{\\ast\\}","options":{},"pos":[1261.5,565.5],"zindex":0}}],"sizeGrid":29,"title":"1"}]},"version":20}
+    ```,
+    [$⇔$],
+    [$+ ∘ (id × -) ∘ Δ = 0$\  \ $∀ g ∈ G, g + -g = 0$],
+    [...#h(1em)],
+  )
+  // ...
   // [$ul(⊙) ∘ (id × ul(i)) ∘ Δ = ul(e)$\  \ $∀ g ∈ G, g ul(⊙) ul(i)(g) = ul(e)$],)
 ]
 
